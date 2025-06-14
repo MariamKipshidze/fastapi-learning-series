@@ -31,5 +31,7 @@ uvicorn main:app --reload
 ```
 
 This will start the development server at `http://127.0.0.1:8000/`
+
 Interactive API docs - `http://127.0.0.1:8000/docs`
+
 Alternative API docs - `http://127.0.0.1:8000/redoc`

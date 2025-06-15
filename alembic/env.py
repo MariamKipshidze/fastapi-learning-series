@@ -1,54 +1,45 @@
 import os
 import sys
 from logging.config import fileConfig
-from os.path import dirname, abspath
+from os.path import dirname, abspath, join
 
 from dotenv import load_dotenv
-
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import engine_from_config, pool
 from alembic import context
 
-# Load environment variables from .env.local first, then .env
+# Load environment variables
 load_dotenv('.env.local')
-load_dotenv()  # Fallback to .env if variable not in .env.local
+load_dotenv()
 
-# 1. Add your PROJECT ROOT to Python path
+# 1. Add project root to Python path (critical fix)
 project_root = dirname(dirname(abspath(__file__)))
 sys.path.insert(0, project_root)
 
-# 2. Now try importing - use absolute import path
+# 2. Import Base - simplified approach
 try:
-    # First try absolute import (if your project is a package)
-    from fastapi_learning_series.config import Base
-except ImportError:
-    try:
-        # Fallback to direct config import
-        from config import Base
-    except ImportError as e:
-        raise ImportError(
-            f"Cannot import Base. sys.path: {sys.path}\n"
-            f"Current dir: {os.getcwd()}\n"
-            f"Project root: {project_root}"
-        ) from e
+    # Direct import from config.py in project root
+    from config import Base
+except ImportError as e:
+    raise ImportError(
+        f"Failed to import Base from config.py. "
+        f"Current directory: {os.getcwd()}\n"
+        f"Python path: {sys.path}\n"
+        f"Is config.py in {project_root}?"
+    ) from e
 
-# This is the Alembic Config object
+# Alembic config setup
 config = context.config
+if config.config_file_name is not None:
+    fileConfig(config.config_file_name)
 
-# Set up Python loggers
-fileConfig(config.config_file_name)
-
-# Import your SQLAlchemy Base and models here
-# This should match where your Base is defined in your project
-# Example: from app.db.base import Base
-# Or if using the config.py we discussed earlier:
+# Set target metadata
 target_metadata = Base.metadata
 
-# Set the database URL from environment variables
+# Get DB URL from environment
 def get_database_url():
     db_url = os.getenv("DATABASE_URL")
     if not db_url:
-        raise ValueError("DATABASE_URL not found in environment variables")
+        raise ValueError("DATABASE_URL must be set in environment variables")
     return db_url
 
 config.set_main_option('sqlalchemy.url', get_database_url())
@@ -62,7 +53,6 @@ def run_migrations_offline():
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
     )
-
     with context.begin_transaction():
         context.run_migrations()
 
@@ -73,15 +63,13 @@ def run_migrations_online():
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
-
     with connectable.connect() as connection:
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
-            compare_type=True,  # Good for detecting column type changes
-            compare_server_default=True,  # Detect default value changes
+            compare_type=True,
+            compare_server_default=True,
         )
-
         with context.begin_transaction():
             context.run_migrations()
 

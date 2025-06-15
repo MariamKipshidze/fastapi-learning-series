@@ -1,0 +1,81 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Pytest cache
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Environment variables files
+.env
+.env.*
+
+# SQLite database file (if used)
+*.db
+
+# Alembic migrations (optional: commit if you want migrations versioned)
+alembic/versions/
+
+# Logs
+*.log
+
+# FastAPI/uvicorn logs (if any)
+*.log
+
+# MacOS files
+.DS_Store
+
+# Virtual environment folders
+venv/
+env/
+.env/
+.venv/
+
+# Coverage reports
+coverage.xml

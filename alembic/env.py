@@ -11,32 +11,27 @@ from alembic import context
 load_dotenv('.env.local')
 load_dotenv()
 
-# 1. Add project root to Python path (critical fix)
+# Add project root to Python path
 project_root = dirname(dirname(abspath(__file__)))
 sys.path.insert(0, project_root)
 
-# 2. Import Base - simplified approach
-try:
-    # Direct import from config.py in project root
-    from config import Base
-except ImportError as e:
-    raise ImportError(
-        f"Failed to import Base from config.py. "
-        f"Current directory: {os.getcwd()}\n"
-        f"Python path: {sys.path}\n"
-        f"Is config.py in {project_root}?"
-    ) from e
+# Import Base from database.py (where your Base is defined)
+from database import Base
 
-# Alembic config setup
+# Import all your models AFTER Base is imported
+# This ensures they're registered with SQLAlchemy
+from users.models import User
+
+# Set target metadata AFTER all models are imported
+target_metadata = Base.metadata
+
+# Standard Alembic configuration
 config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# Set target metadata
-target_metadata = Base.metadata
-
-# Get DB URL from environment
 def get_database_url():
+    """Get database URL from environment variables."""
     db_url = os.getenv("DATABASE_URL")
     if not db_url:
         raise ValueError("DATABASE_URL must be set in environment variables")

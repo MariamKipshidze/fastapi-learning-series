@@ -21,6 +21,7 @@ from database import Base
 # Import all your models AFTER Base is imported
 # This ensures they're registered with SQLAlchemy
 from users.models import User
+from blog.models import BlogPost, Comment
 
 # Set target metadata AFTER all models are imported
 target_metadata = Base.metadata

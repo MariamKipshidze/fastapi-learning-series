@@ -30,6 +30,15 @@ pip install fastapi[all] uvicorn
 uvicorn main:app --reload
 ```
 
+### 5. Create and run Migrations
+
+```bash
+alembic revision --autogenerate -m "Comment"
+```
+```bash
+lembic upgrade head 
+```
+
 This will start the development server at `http://127.0.0.1:8000/`
 
 Interactive API docs - `http://127.0.0.1:8000/docs`

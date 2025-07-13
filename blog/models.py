@@ -33,4 +33,4 @@ class Comment(Base):
     author_id = Column(Integer, ForeignKey('users.id'))
 
     post = relationship("BlogPost", back_populates="comments")
-    author = relationship("User")
+    author = relationship("User", back_populates="comments")

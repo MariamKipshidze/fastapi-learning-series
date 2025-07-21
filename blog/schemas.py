@@ -35,8 +35,8 @@ class CommentOut(CommentBase):
 
 # ------------------ BlogPost Schemas ------------------ #
 class BlogPostBase(BaseModel):
-    title: str
-    content: str
+    title: str = Field(..., example="My First Blog Post", min_length=3, max_length=100)
+    content: str = Field(..., example="This is the content of the blog post.", min_length=10)
 
 
 class BlogPostCreate(BlogPostBase):

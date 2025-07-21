@@ -13,6 +13,6 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     password = Column(String)
 
-    posts = relationship("BlogPost", back_populates="author")
-    liked_posts = relationship("BlogPost", secondary=post_likes, back_populates="likes")
-    comments = relationship("Comment", back_populates="author")
+    posts = relationship(argument="BlogPost", back_populates="author")
+    liked_posts = relationship(argument="BlogPost", secondary=post_likes, back_populates="likes")
+    comments = relationship(argument="Comment", back_populates="author")

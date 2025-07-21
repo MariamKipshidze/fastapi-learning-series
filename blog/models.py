@@ -1,5 +1,4 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, Table
-from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -23,14 +22,6 @@ class BlogPost(Base):
     title = Column(String, nullable=False)
     content = Column(Text, nullable=False)
     author_id = Column(Integer, ForeignKey('users.id'))
-
-    @hybrid_property
-    def like_count(self):
-        return len(self.likes)
-
-    @hybrid_property
-    def comment_count(self):
-        return len(self.comments)
 
 
 class Comment(Base):

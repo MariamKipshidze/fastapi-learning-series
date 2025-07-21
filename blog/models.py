@@ -16,9 +16,9 @@ class BlogPost(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    author = relationship(argument="User", back_populates="posts")
-    likes = relationship(argument="User", secondary=post_likes, back_populates="liked_posts")
-    comments = relationship(argument="Comment", back_populates="post", cascade="all, delete-orphan")
+    author = relationship("User", back_populates="posts")
+    likes = relationship("User", secondary=post_likes, back_populates="liked_posts")
+    comments = relationship("Comment", back_populates="post", cascade="all, delete-orphan")
 
     title = Column(String, nullable=False)
     content = Column(Text, nullable=False)
@@ -41,5 +41,5 @@ class Comment(Base):
     post_id = Column(Integer, ForeignKey('posts.id'))
     author_id = Column(Integer, ForeignKey('users.id'))
 
-    post = relationship(argument="BlogPost", back_populates="comments")
-    author = relationship(argument="User", back_populates="comments")
+    post = relationship("BlogPost", back_populates="comments")
+    author = relationship("User", back_populates="comments")

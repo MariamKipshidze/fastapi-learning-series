@@ -37,6 +37,11 @@ class CommentOut(CommentBase):
 class BlogPostBase(BaseModel):
     title: str = Field(..., example="My First Blog Post", min_length=3, max_length=100)
     content: str = Field(..., example="This is the content of the blog post.", min_length=10)
+    like_count: int
+    comment_count: int
+
+    class Config:
+        orm_mode = True
 
 
 class BlogPostCreate(BlogPostBase):
